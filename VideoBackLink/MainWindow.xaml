@@ -6,15 +6,12 @@
         xmlns:local="clr-namespace:VideoBackLink"
         xmlns:Custom="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" x:Class="VideoBackLink.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650.659" Width="1181.823" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
+        Title="MainWindow" Height="650.659" Width="1181.823" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,5,0.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="239*"/>
             <ColumnDefinition Width="341*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-
-        <Custom:Ribbon Height="217" VerticalAlignment="Top" Width="1172" HorizontalAlignment="Left" Grid.ColumnSpan="3"/>
-
     </Grid>
 </Window>
