@@ -5,6 +5,7 @@ namespace YoutubeHelper
     public class MyVideo
     {
         public bool Selected { get; set; }
+        public string Id { get; set; }
         public string ChannelTitle { get; set; }
         public string Description { get; set; }
         public string PublishedAtRaw { get; set; }

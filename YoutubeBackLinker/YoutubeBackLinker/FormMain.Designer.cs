@@ -359,6 +359,7 @@
             this.buttonDeselectSelection.TabIndex = 8;
             this.buttonDeselectSelection.Text = "Deselect Selection";
             this.buttonDeselectSelection.UseVisualStyleBackColor = true;
+            this.buttonDeselectSelection.Click += new System.EventHandler(this.ButtonDeselectSelection_Click);
             // 
             // FormMain
             // 

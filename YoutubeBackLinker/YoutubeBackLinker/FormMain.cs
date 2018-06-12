@@ -168,5 +168,17 @@ namespace YoutubeBackLinker
             DeselectAll();
             DisplaySearchResults2();
         }
+
+        private void ButtonDeselectSelection_Click(object sender, EventArgs e)
+        {
+            var downloader = new Downloader(VideoList.Take(2).ToList(), @"C:\TEMP");
+            downloader.OnDownload += Downloader_OnDownload;
+            downloader.Get();
+        }
+
+        private void Downloader_OnDownload(string id, double percentage)
+        {
+            Debug.WriteLine($"{id} -> {percentage}");
+        }
     }
 }

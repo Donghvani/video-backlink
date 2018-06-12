@@ -38,6 +38,7 @@ namespace YoutubeHelper
                         var stats = GetVideoStats(youtubeService, searchResult.Id.VideoId);
                         MyVideo myVideo = new MyVideo
                         {
+                            Id = searchResult.Id.VideoId,
                             ChannelTitle = searchResult.Snippet.ChannelTitle,
                             Description = searchResult.Snippet.Description,
                             PublishedAtRaw = searchResult.Snippet.PublishedAtRaw,
