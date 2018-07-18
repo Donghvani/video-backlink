@@ -12,7 +12,12 @@ namespace YoutubeBackLinker
     public partial class FormMain : Form
     {
         private string ApiKey;
-        private List<MyVideo> VideoList;
+        public List<MyVideo> VideoList;
+
+        public List<MyVideo> SelectedVideos
+        {
+            get { return VideoList.Where(video => video.Selected).ToList(); }
+        }
 
         public FormMain()
         {
@@ -36,10 +41,17 @@ namespace YoutubeBackLinker
         private async void ButtonSearch_Click(object sender, EventArgs e)
         {
             var maxValueDecimal = numericUpDownMaxResults.Value;
-            var maxValue = (int) maxValueDecimal;
-            VideoList = await new Search().Run(ApiKey, textBoxSearchTerm.Text, maxValue);
-            DisplaySearchResults2();
-            EnableSelectionButtons();
+            var maxValue = (int)maxValueDecimal;
+            try
+            {
+                VideoList = await new Search().Run(ApiKey, textBoxSearchTerm.Text, maxValue);
+                DisplaySearchResults2();
+                EnableSelectionButtons();
+            }
+            catch
+            {
+                MessageBox.Show("Something went wrong, please check internet connection and try again");
+            }
         }
 
         private void EnableSelectionButtons()
@@ -54,7 +66,8 @@ namespace YoutubeBackLinker
         private void EnableDownloadButtons()
         {
             buttonDownloadAll.Enabled = VideoList.Count > 0;
-            buttonDeselectSelection.Enabled = VideoList.Count(video => video.Selected) > 0;
+            buttonDownloadSelection.Enabled = SelectedVideos.Count > 0;
+            buttonDownloadSelection.Text = $"Download {SelectedVideos.Count}";
         }
 
         private void DisplaySearchResults()

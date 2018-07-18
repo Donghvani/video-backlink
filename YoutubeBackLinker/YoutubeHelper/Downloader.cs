@@ -32,11 +32,9 @@ namespace YoutubeHelper
             foreach (var myVideo in MyVideos)
             {
                 IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(VideoBaseUrl + myVideo.Id);
-
-
+            
                 VideoInfo video = videoInfos
                     .First(info => info.VideoType == VideoType.Mp4 && info.Resolution == 360);
-
 
                 if (video.RequiresDecryption)
                 {
