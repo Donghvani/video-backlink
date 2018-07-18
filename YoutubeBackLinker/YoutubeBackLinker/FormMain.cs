@@ -184,7 +184,8 @@ namespace YoutubeBackLinker
 
         private void ButtonDownloadSelection_Click(object sender, EventArgs e)
         {
-            var downloader = new Downloader(VideoList.Take(2).ToList(), @"C:\TEMP");
+            //TODO: remove take 2
+            var downloader = new Downloader(VideoList.Take(2).ToList(), AppSettings.VideoDownloadDir, AppSettings.VideoBaseUrl);
             downloader.OnDownload += Downloader_OnDownload;
             downloader.Get();
         }

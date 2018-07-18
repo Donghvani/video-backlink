@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using YoutubeExtractor;
@@ -10,20 +9,19 @@ namespace YoutubeHelper
     public class Downloader
     {
         public List<MyVideo> MyVideos { get; set; }
-        public string SavePath { get; set; }
-        
-        private static string VideoBaseUrl => ConfigurationManager.AppSettings["youtubeBaseUrl"];
-        private static string VideoDownloadDir => ConfigurationManager.AppSettings["videoDownloadDir"];
+        public string VideoDownloadDir { get; set; }
+        public string VideoBaseUrl { get; set; }
 
         public delegate void DownloadHandler(string id, double percentage);
         public event DownloadHandler OnDownload;
 
         public delegate void DownloadProgressChangedHandler(double percentage);
 
-        public Downloader(List<MyVideo> myVideos, string savePath)
+        public Downloader(List<MyVideo> myVideos, string savePath, string videoBaseUrl)
         {
             MyVideos = myVideos;
-            SavePath = savePath;
+            VideoDownloadDir = savePath;
+            VideoBaseUrl = videoBaseUrl;
         }
 
         public void Get()
