@@ -171,7 +171,7 @@
             this.buttonDownloadSelection.TabIndex = 8;
             this.buttonDownloadSelection.Text = "Download Selection";
             this.buttonDownloadSelection.UseVisualStyleBackColor = true;
-            this.buttonDownloadSelection.Click += new System.EventHandler(this.ButtonDeselectSelection_Click);
+            this.buttonDownloadSelection.Click += new System.EventHandler(this.ButtonDownloadSelection_Click);
             // 
             // buttonDownloadAll
             // 

@@ -182,7 +182,7 @@ namespace YoutubeBackLinker
             DisplaySearchResults2();
         }
 
-        private void ButtonDeselectSelection_Click(object sender, EventArgs e)
+        private void ButtonDownloadSelection_Click(object sender, EventArgs e)
         {
             var downloader = new Downloader(VideoList.Take(2).ToList(), @"C:\TEMP");
             downloader.OnDownload += Downloader_OnDownload;
