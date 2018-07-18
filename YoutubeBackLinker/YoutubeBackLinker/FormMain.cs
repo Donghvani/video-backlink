@@ -34,8 +34,10 @@ namespace YoutubeBackLinker
 
         private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO: confirmation text
-            Application.Exit();
+            if (MessageBox.Show("Close Application", "Close", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }            
         }
 
         private async void ButtonSearch_Click(object sender, EventArgs e)
