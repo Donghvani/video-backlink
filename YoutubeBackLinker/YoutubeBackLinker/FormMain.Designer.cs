@@ -34,6 +34,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridViewSearchResults = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonClearSearchResults = new System.Windows.Forms.Button();
             this.buttonDownloadSelection = new System.Windows.Forms.Button();
             this.buttonDownloadAll = new System.Windows.Forms.Button();
             this.buttonDeselectAll = new System.Windows.Forms.Button();
@@ -145,6 +146,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.buttonClearSearchResults);
             this.groupBox1.Controls.Add(this.buttonDownloadSelection);
             this.groupBox1.Controls.Add(this.buttonDownloadAll);
             this.groupBox1.Controls.Add(this.buttonDeselectAll);
@@ -160,11 +162,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selection";
             // 
+            // buttonClearSearchResults
+            // 
+            this.buttonClearSearchResults.Enabled = false;
+            this.buttonClearSearchResults.Location = new System.Drawing.Point(12, 37);
+            this.buttonClearSearchResults.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonClearSearchResults.Name = "buttonClearSearchResults";
+            this.buttonClearSearchResults.Size = new System.Drawing.Size(89, 44);
+            this.buttonClearSearchResults.TabIndex = 9;
+            this.buttonClearSearchResults.Text = "Clear";
+            this.buttonClearSearchResults.UseVisualStyleBackColor = true;
+            this.buttonClearSearchResults.Click += new System.EventHandler(this.ButtonClearSearchResults_Click);
+            // 
             // buttonDownloadSelection
             // 
             this.buttonDownloadSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDownloadSelection.Enabled = false;
-            this.buttonDownloadSelection.Location = new System.Drawing.Point(1432, 37);
+            this.buttonDownloadSelection.Location = new System.Drawing.Point(1503, 37);
             this.buttonDownloadSelection.Margin = new System.Windows.Forms.Padding(6);
             this.buttonDownloadSelection.Name = "buttonDownloadSelection";
             this.buttonDownloadSelection.Size = new System.Drawing.Size(218, 44);
@@ -177,18 +191,19 @@
             // 
             this.buttonDownloadAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDownloadAll.Enabled = false;
-            this.buttonDownloadAll.Location = new System.Drawing.Point(1132, 37);
+            this.buttonDownloadAll.Location = new System.Drawing.Point(1233, 37);
             this.buttonDownloadAll.Margin = new System.Windows.Forms.Padding(6);
             this.buttonDownloadAll.Name = "buttonDownloadAll";
             this.buttonDownloadAll.Size = new System.Drawing.Size(218, 44);
             this.buttonDownloadAll.TabIndex = 7;
             this.buttonDownloadAll.Text = "Download All";
             this.buttonDownloadAll.UseVisualStyleBackColor = true;
+            this.buttonDownloadAll.Click += new System.EventHandler(this.ButtonDownloadAll_Click);
             // 
             // buttonDeselectAll
             // 
             this.buttonDeselectAll.Enabled = false;
-            this.buttonDeselectAll.Location = new System.Drawing.Point(868, 37);
+            this.buttonDeselectAll.Location = new System.Drawing.Point(963, 37);
             this.buttonDeselectAll.Margin = new System.Windows.Forms.Padding(6);
             this.buttonDeselectAll.Name = "buttonDeselectAll";
             this.buttonDeselectAll.Size = new System.Drawing.Size(218, 44);
@@ -200,7 +215,7 @@
             // buttonSelectAll
             // 
             this.buttonSelectAll.Enabled = false;
-            this.buttonSelectAll.Location = new System.Drawing.Point(582, 37);
+            this.buttonSelectAll.Location = new System.Drawing.Point(693, 37);
             this.buttonSelectAll.Margin = new System.Windows.Forms.Padding(6);
             this.buttonSelectAll.Name = "buttonSelectAll";
             this.buttonSelectAll.Size = new System.Drawing.Size(218, 44);
@@ -212,7 +227,7 @@
             // buttonSelectTop20
             // 
             this.buttonSelectTop20.Enabled = false;
-            this.buttonSelectTop20.Location = new System.Drawing.Point(310, 37);
+            this.buttonSelectTop20.Location = new System.Drawing.Point(423, 37);
             this.buttonSelectTop20.Margin = new System.Windows.Forms.Padding(6);
             this.buttonSelectTop20.Name = "buttonSelectTop20";
             this.buttonSelectTop20.Size = new System.Drawing.Size(218, 44);
@@ -224,7 +239,7 @@
             // buttonSelectTop10
             // 
             this.buttonSelectTop10.Enabled = false;
-            this.buttonSelectTop10.Location = new System.Drawing.Point(40, 37);
+            this.buttonSelectTop10.Location = new System.Drawing.Point(153, 37);
             this.buttonSelectTop10.Margin = new System.Windows.Forms.Padding(6);
             this.buttonSelectTop10.Name = "buttonSelectTop10";
             this.buttonSelectTop10.Size = new System.Drawing.Size(218, 44);
@@ -348,7 +363,7 @@
             this.tabPageUpload.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageUpload.Name = "tabPageUpload";
             this.tabPageUpload.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPageUpload.Size = new System.Drawing.Size(1782, 891);
+            this.tabPageUpload.Size = new System.Drawing.Size(1782, 856);
             this.tabPageUpload.TabIndex = 1;
             this.tabPageUpload.Text = "Upload";
             this.tabPageUpload.UseVisualStyleBackColor = true;
@@ -358,7 +373,7 @@
             this.tabPageAccount.Location = new System.Drawing.Point(8, 39);
             this.tabPageAccount.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageAccount.Name = "tabPageAccount";
-            this.tabPageAccount.Size = new System.Drawing.Size(1782, 891);
+            this.tabPageAccount.Size = new System.Drawing.Size(1782, 856);
             this.tabPageAccount.TabIndex = 2;
             this.tabPageAccount.Text = "Account";
             this.tabPageAccount.UseVisualStyleBackColor = true;
@@ -449,6 +464,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelectedCount;
         private System.Windows.Forms.Button buttonDownloadSelection;
         private System.Windows.Forms.Button buttonDownloadAll;
+        private System.Windows.Forms.Button buttonClearSearchResults;
     }
 }
 

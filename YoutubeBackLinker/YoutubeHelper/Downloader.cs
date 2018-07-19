@@ -48,7 +48,7 @@ namespace YoutubeHelper
                 }
 
                 var videoDownloader = new VideoDownloader(video,
-                    GetValidDirectoryName(Path.Combine(savePath, video.Title + video.VideoExtension)));
+                    Path.Combine(savePath, GetValidDirectoryName(video.Title + video.VideoExtension)));
 
                 videoDownloader.DownloadProgressChanged += (sender, args) =>
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using Google.Apis.YouTube.v3.Data;
 using YoutubeHelper;
@@ -40,36 +41,67 @@ namespace YoutubeBackLinker
             }            
         }
 
-        private async void ButtonSearch_Click(object sender, EventArgs e)
+        private void ButtonSearch_Click(object sender, EventArgs e)
         {
-            var maxValueDecimal = numericUpDownMaxResults.Value;
-            var maxValue = (int)maxValueDecimal;
-            try
+            buttonSearch.Enabled = false;
+
+            var thread = new Thread(async () =>
             {
-                VideoList = await new Search().Run(ApiKey, textBoxSearchTerm.Text, maxValue);
-                DisplaySearchResults2();
-                EnableSelectionButtons();
-            }
-            catch
-            {
-                MessageBox.Show("Something went wrong, please check internet connection and try again");
-            }
+                var maxValueDecimal = numericUpDownMaxResults.Value;
+                var maxValue = (int)maxValueDecimal;
+                try
+                {
+                    VideoList = await new Search().Run(ApiKey, textBoxSearchTerm.Text, maxValue);
+                    DisplaySearchResults2();
+                    EnableSelectionButtons();
+                }
+                catch(Exception ASD)
+                {
+                    buttonSearch.Enabled = true;
+                    MessageBox.Show("Something went wrong, please check internet connection and try again");
+                }
+            });
+            thread.Start();            
         }
 
         private void EnableSelectionButtons()
         {
-            var enable = VideoList.Count > 0;
-            buttonSelectTop10.Enabled = enable;
-            buttonSelectTop20.Enabled = enable;
-            buttonSelectAll.Enabled = enable;
-            buttonDeselectAll.Enabled = enable;
+            var action = new Action(() =>
+            {
+                var enable = VideoList.Count > 0;
+                buttonSelectTop10.Enabled = enable;
+                buttonSelectTop20.Enabled = enable;
+                buttonSelectAll.Enabled = enable;
+                buttonDeselectAll.Enabled = enable;
+                buttonSearch.Enabled = true;
+            });
+            if (buttonSelectTop10.InvokeRequired)
+            {
+                buttonSelectTop10.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
         }
 
         private void EnableDownloadButtons()
         {
-            buttonDownloadAll.Enabled = VideoList.Count > 0;
-            buttonDownloadSelection.Enabled = SelectedVideos.Count > 0;
-            buttonDownloadSelection.Text = $"Download {SelectedVideos.Count}";
+            var action = new Action(() =>
+            {
+                buttonDownloadAll.Enabled = VideoList.Count > 0;
+                buttonDownloadSelection.Enabled = SelectedVideos.Count > 0;
+                buttonDownloadSelection.Text = $"Download {SelectedVideos.Count}";
+                buttonClearSearchResults.Enabled = VideoList.Count > 0;
+            });
+            if (buttonDownloadAll.InvokeRequired)
+            {
+                buttonDeselectAll.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
         }
 
         private void DisplaySearchResults()
@@ -118,8 +150,21 @@ namespace YoutubeBackLinker
 
         private void DisplaySearchResults2()
         {
-            dataGridViewSearchResults.DataSource = null;
-            dataGridViewSearchResults.DataSource = VideoList;
+            var action = new Action(() =>
+            {
+                dataGridViewSearchResults.DataSource = null;
+                dataGridViewSearchResults.DataSource = VideoList;
+            });
+
+            if (dataGridViewSearchResults.InvokeRequired)
+            {
+                dataGridViewSearchResults.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+
             toolStripStatusLabelMain.Text = $"Found {VideoList.Count} videos;";
             var count = VideoList.Count(vd => vd.Selected);
             toolStripStatusLabelSelectedCount.Text = $"Selected {count};";
@@ -184,17 +229,39 @@ namespace YoutubeBackLinker
             DisplaySearchResults2();
         }
 
+        private void ButtonDownloadAll_Click(object sender, EventArgs e)
+        {
+            Download(VideoList, (Button)sender);
+        }
+
         private void ButtonDownloadSelection_Click(object sender, EventArgs e)
         {
-            //TODO: remove take 2
-            var downloader = new Downloader(VideoList.Take(2).ToList(), AppSettings.VideoDownloadDir, AppSettings.VideoBaseUrl);
-            downloader.OnDownload += Downloader_OnDownload;
-            downloader.Get();
+            Download(SelectedVideos, (Button) sender);
+        }
+
+        private void Download(List<MyVideo> videos, Button sender)
+        {
+            sender.Enabled = false;
+            dataGridViewSearchResults.Enabled = false;
+            var thread = new Thread(() =>
+            {
+                var downloader = new Downloader(videos, AppSettings.VideoDownloadDir, AppSettings.VideoBaseUrl);
+                downloader.OnDownload += Downloader_OnDownload;
+                downloader.Get();
+            });
+            thread.Start();
         }
 
         private void Downloader_OnDownload(string id, double percentage)
         {
             Debug.WriteLine($"{id} -> {percentage}");
+        }
+
+        private void ButtonClearSearchResults_Click(object sender, EventArgs e)
+        {
+            VideoList = new List<MyVideo>();
+            DisplaySearchResults2();
+            EnableSelectionButtons();
         }
     }
 }
