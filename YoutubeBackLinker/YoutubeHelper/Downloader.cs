@@ -41,7 +41,14 @@ namespace YoutubeHelper
                     DownloadUrlResolver.DecryptDownloadUrl(video);
                 }
 
-                var videoDownloader = new VideoDownloader(video, Path.Combine(VideoDownloadDir, nowFolder, video.Title + video.VideoExtension));
+                var savePath = Path.Combine(VideoDownloadDir, nowFolder);
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+
+                var videoDownloader = new VideoDownloader(video,
+                    GetValidDirectoryName(Path.Combine(savePath, video.Title + video.VideoExtension)));
 
                 videoDownloader.DownloadProgressChanged += (sender, args) =>
                 {
@@ -50,6 +57,11 @@ namespace YoutubeHelper
 
                 videoDownloader.Execute();
             }
+        }
+
+        public string GetValidDirectoryName(string directoryName)
+        {
+            return Path.GetInvalidFileNameChars().Aggregate(directoryName, (current, c) => current.Replace(char.ToString(c), ""));
         }
     }
 }
