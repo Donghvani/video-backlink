@@ -14,6 +14,7 @@ namespace YoutubeBackLinker
     {
         private string _apiKey;
         public List<MyVideo> VideoList = new List<MyVideo>();
+        private Dictionary<string, int> _videoIdIndexDictionary = new Dictionary<string, int>();
 
         public List<int> SelectedVideoIndexes
         {
@@ -80,15 +81,31 @@ namespace YoutubeBackLinker
                 try
                 {
                     VideoList = await new Search().Run(_apiKey, textBoxSearchTerm.Text, maxValue);
+                    _videoIdIndexDictionary = MapVideoIdToIndex();
                     DisplaySearchResults();
                 }
-                catch (Exception exception)
+                catch
                 {
                     buttonSearch.Enabled = true;
                     MessageBox.Show("Something went wrong, please check internet connection and try again");
                 }
             });
             thread.Start();
+        }
+
+        private Dictionary<string, int> MapVideoIdToIndex()
+        {
+            var result = new Dictionary<string, int>();
+            for (var index = 0; index < VideoList.Count; index++)
+            {
+                var videoId = VideoList[index].Id;
+                if (!result.ContainsKey(videoId))
+                {
+                    result.Add(videoId, index);
+                }
+            }
+
+            return result;
         }
 
         private void EnableSelectionButtons(bool enable)
@@ -232,22 +249,41 @@ namespace YoutubeBackLinker
             Download(SelectedVideos, (Button) sender);
         }
 
+        private void LockUi(bool shouldLock)
+        {
+            var action = new Action(() =>
+            {
+                groupBoxSearch.Enabled = !shouldLock;
+                groupBoxResults.Enabled = !shouldLock;
+            });
+
+            if (groupBoxSearch.InvokeRequired)
+            {
+                groupBoxSearch.Invoke(action);
+            }
+
+            action();
+        }
+
         private void Download(List<MyVideo> videos, Button sender)
         {
-            sender.Enabled = false;
-            dataGridViewSearchResults.Enabled = false;
+            LockUi(true);
             var thread = new Thread(() =>
             {
-                var downloader = new Downloader(videos, AppSettings.VideoDownloadDir, AppSettings.VideoBaseUrl);
+                var downloader = new Downloader(videos.Take(5).ToList(), AppSettings.VideoDownloadDir, AppSettings.VideoBaseUrl);
                 downloader.OnDownload += Downloader_OnDownload;
                 downloader.Get();
+                LockUi(false);
             });
             thread.Start();
         }
 
         private void Downloader_OnDownload(string id, double percentage)
         {
-            Debug.WriteLine($"{id} -> {percentage}");
+            if (_videoIdIndexDictionary.ContainsKey(id))
+            {
+                dataGridViewSearchResults.Rows[_videoIdIndexDictionary[id]].Cells[11].Value = percentage.ToString("N2");
+            }            
         }
 
         private void ButtonClearSearchResults_Click(object sender, EventArgs e)
