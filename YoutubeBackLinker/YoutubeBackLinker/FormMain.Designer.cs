@@ -140,7 +140,7 @@
             this.dataGridViewSearchResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewSearchResults.Size = new System.Drawing.Size(1722, 365);
             this.dataGridViewSearchResults.TabIndex = 2;
-            this.dataGridViewSearchResults.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGridViewSearchResults_MouseDown);
+            this.dataGridViewSearchResults.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DataGridViewSearchResults_MouseUp);
             // 
             // groupBox1
             // 

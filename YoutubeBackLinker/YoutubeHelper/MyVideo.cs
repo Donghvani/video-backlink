@@ -4,7 +4,7 @@ namespace YoutubeHelper
 {
     public class MyVideo
     {
-        public bool Selected { get; set; }
+        //public bool Selected { get; set; }
         public string Id { get; set; }
         public string ChannelTitle { get; set; }
         public string Description { get; set; }
@@ -17,5 +17,6 @@ namespace YoutubeHelper
         public ulong? FavoriteCount { get; set; }
         public ulong? LikeCount { get; set; }
         public ulong? ViewCount { get; set; }
+        public double Downloaded { get; set; }
     }
 }
