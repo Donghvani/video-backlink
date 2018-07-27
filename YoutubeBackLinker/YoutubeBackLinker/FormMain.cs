@@ -270,6 +270,7 @@ namespace YoutubeBackLinker
             LockUi(true);
             var thread = new Thread(() =>
             {
+                //TODO REMOVE TAKE 5
                 var downloader = new Downloader(videos.Take(5).ToList(), AppSettings.VideoDownloadDir, AppSettings.VideoBaseUrl);
                 downloader.OnDownload += Downloader_OnDownload;
                 downloader.Get();
