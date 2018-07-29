@@ -5,15 +5,15 @@
     //$ratioPercentage = 25;
 
     $serialAndDateTime = getSerialAndDateTime($saltedSerial, $ratioPercentage);
-	echo "request time sha1: ", json_encode($serialAndDateTime["dateTimeSha1"]), PHP_EOL; 
+	//echo "request time sha1: ", json_encode($serialAndDateTime["dateTimeSha1"]), PHP_EOL; 
     
 	$dateTimes = dts();
-	echo "dateTimes: ", json_encode($dateTimes), PHP_EOL;
+	//echo "dateTimes: ", json_encode($dateTimes), PHP_EOL;
 	
 	$validSha1s = getSha1s($dateTimes);
-	echo "valid Sha1s: ", json_encode($validSha1s), PHP_EOL; 
+	//echo "valid Sha1s: ", json_encode($validSha1s), PHP_EOL; 
 	
-	echo "valid reques: ", json_encode(isValidRequest($serialAndDateTime["dateTimeSha1"], $validSha1s)), PHP_EOL;
+	echo json_encode(isValidRequest($serialAndDateTime["dateTimeSha1"], $validSha1s));
 
     function dts() {
         $dtNow = new DateTime("now", new DateTimeZone("UTC")); 
